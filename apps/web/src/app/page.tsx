@@ -51,6 +51,8 @@ type ResearchRun = {
   question: string;
   status: RunStatus;
   created_at: string;
+  source_count?: number;
+  claim_count?: number;
   objective?: string | null;
   subquestions?: string[];
   report_markdown?: string | null;
@@ -168,6 +170,7 @@ export default function Home() {
       setQuestion("");
       await loadRuns();
     } catch (reason) {
+      await loadRuns();
       setError(reason instanceof Error ? reason.message : "Could not start this research run.");
     } finally {
       setSubmitting(false);
@@ -352,7 +355,7 @@ export default function Home() {
                           <strong>{run.question}</strong>
                           <span><Clock3 size={13} /> {formatDate(run.created_at)}</span>
                         </div>
-                        <span className="run-sources">{run.sources?.length ?? 0} sources</span>
+                        <span className="run-sources">{run.source_count ?? run.sources?.length ?? 0} sources</span>
                         <StatusPill status={run.status} />
                         <ArrowRight size={16} className="run-arrow" />
                       </button>
